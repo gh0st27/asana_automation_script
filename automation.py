@@ -22,7 +22,7 @@ class Asana_Auto:
 
 	def file_to_dict(self):
 		d = {}
-                with open("/home/python/asana_automation/task_id_dict.txt") as f:
+                with open(self.task_id_location) as f:
 		        for line in f:
 	        		(key, val) = line.split(':')
                 		d[key] = int(val)
