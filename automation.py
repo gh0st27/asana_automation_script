@@ -1,13 +1,15 @@
 #!/usr/bin/python -tt
 import os
 import requests
+import shutil
 
 class Asana_Auto:
 
-	def __init__(self,auth_key,task_id_location,attachment_location):
+	def __init__(self,auth_key,task_id_location,attachment_location,upload_dir):
 		self.auth_key = auth_key
 		self.task_id_location = task_id_location
 		self.attachment_location = attachment_location
+		self.upload_dir = upload_dir
 
 	def find_attachment(self):
 		if os.path.exists(self.attachment_location) and os.path.isdir(self.attachment_location):
@@ -60,16 +62,30 @@ class Asana_Auto:
 
 		with open(full_file_path, 'rb') as f:
 			files = {'file': (file_name, f.read())}
-    			r = requests.post(url, auth=(self.auth_key, ''), files=files)
+    			try:
+				r = requests.post(url, auth=(self.auth_key, ''), files=files)
+			except:
+				print "something went wrong"
+
 		print(r.status_code)
 		print(r.json())
-		print "successfully uploaded attachement- leaving upload function"
+		print "successfully uploaded attachement"
+		if not os.path.exists(self.upload_dir):
+                        os.makedirs(self.upload_dir)
+                        print 'directory created to move uploaded data'
+                else:
+                        print 'directory already exists'
+		try:
+			shutil.move(full_file_path,upload_dir)
+		except:
+			print "Cant move to destination directory"
 
 if __name__ =="__main__":
 	auth_key = '0/c97afb9791c5b5c72b63fc5a4abceff1'
 	task_id_location = r'/home/python/asana_automation/task_id/task_id_dict.txt'
 	attachment_location = r'/home/python/asana_automation/attachment'
-	automation = Asana_Auto(auth_key,task_id_location,attachment_location)
+	upload_dir = r'/home/python/asana_automation/uploaded_data'
+	automation = Asana_Auto(auth_key,task_id_location,attachment_location,upload_dir)
 	automation.find_attachment()
 	dict = automation.file_to_dict()
 #	print dict
