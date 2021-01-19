@@ -2,8 +2,8 @@ This script can be use to send the salary slip in the the form of attachment (or
 
 Script needs **task_id_dict.txt** & **Attachment** in particular format
 
-**task_id_dict.txt** => contains username:taskID combination which is used to compare username fetched by attachment file name.
+**task_id_dict.txt** => contains username:taskID combination which is used to compare username fetched by attachment file name. (It will maintain the mapping of userID & taskID)
 
 **Attachment format**
 
-<anything>_<anything>_<username>.txt -> used to fetch username to get particular taskID from task_id_dict.txt
+random_random_username.extension -> used to fetch username to get particular taskID from task_id_dict.txt (look attachment section)
